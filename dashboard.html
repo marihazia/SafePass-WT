@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SafePass Dashboard</title>
+
+<style>
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: #f5f9fb;
+  color: #222;
+}
+
+.navbar {
+  
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: rgb(242, 245, 244);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(30, 50, 140, 0.929); 
+}
+
+.navbar h1 {
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: #085c75;
+    margin: 0;
+    font-size: x-large;
+}
+
+.navbar nav a {
+    margin-left: 25px;
+    font-size: 16px;
+    text-decoration: none;
+    color: #085c75;
+    font-weight: 500;
+    transition: 0.3s;
+    font-size: large;
+
+}
+
+.navbar nav a:hover {
+    color: #4a6cff;
+    text-decoration: none;
+}
+
+
+.admin {
+  padding: 80px 50px;
+}
+
+.card-container {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+  justify-content: center;
+}
+
+.card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 14px;
+  width: 260px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+
+.footer {
+  background-color: #1f275a;
+  color: white;
+  text-align: center;
+  padding: 35px 25px;
+  font-size: larger;
+  margin-top: 140px;
+}
+
+</style>
+
+</head>
+<body>
+
+<header class="navbar">
+<h1>SafePass</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="check.html">Check In/Out</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="logs.html">Logs</a>
+    </nav>
+</header>
+
+<section id="dashboard" class="admin">
+<h2><center>Security Dashboard</center></h2>
+<div class="card-container">
+  <div class="card" id="active">Active Visitors: </div>
+  <div class="card" id="totalreg">Total Registrations Today: </div>
+  <div class="card" id="done">Completed Visits: </div>
+</div>
+</section>
+
+<footer class="footer">
+<p>&copy; 2025 SafePass. All rights reserved.</p>
+</footer>
+
+<script>
+
+let regVisitors = JSON.parse(localStorage.getItem("regVisitors")) || [];
+let activeVisitors = JSON.parse(localStorage.getItem("activeVisitors")) || [];
+let logs = JSON.parse(localStorage.getItem("logs")) || [];
+
+
+function updateDashboard() {
+  document.getElementById("active").innerText = "Active Visitors: "+
+    logs.filter(l => l.status === "in").length;
+
+  document.getElementById("totalreg").innerText =
+    "Total Registerations Today: "+regVisitors.length;
+  
+
+  document.getElementById("done").innerText = "Completed Visits: "+
+    logs.filter(l => l.status === "out").length;
+}
+
+
+updateDashboard();
+</script>
+
+
+</body>
+</html>
