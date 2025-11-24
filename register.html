@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - SafePass</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+
+.navbar {
+    
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 20px 40px;
+background-color: rgb(242, 245, 244);
+backdrop-filter: blur(10px);
+position: sticky;
+top: 0;
+z-index: 1000;
+border-bottom: 1px solid rgba(30, 50, 140, 0.929); 
+}
+
+.navbar h1 {
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: #085c75;
+    margin: 0;
+    font-size: x-large;
+}
+
+.navbar nav a {
+    margin-left: 25px;
+    font-size: 16px;
+    text-decoration: none;
+    color: #085c75;
+    font-weight: 500;
+    transition: 0.3s;
+    font-size: large;
+
+}
+
+.navbar nav a:hover {
+    color: #4a6cff;
+    text-decoration: none;
+}
+
+.page-section {
+background-color: white;
+padding: 40px;
+border-radius: 12px;
+box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.form-image-container {
+    display: flex;
+    gap: 150px; /* space between image and form */
+    align-items: center;
+}
+
+.left-image img {
+    max-width: 620px; 
+    height: auto;
+    border-radius: 12px;
+}
+
+.right-form {
+    width: 350px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+label {
+    font-weight: bold;
+    text-align: left;
+}
+
+input, select, button {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #0fbaee;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #0c91bf;
+}
+
+#qrCode {
+    margin-top: 20px;
+}
+.footer {
+background-color: #1f275a;
+color: white;
+text-align: center;
+padding: 20px 15px;
+margin-top: 0px;
+font-size:larger;
+}
+
+
+</style>
+</head>
+<body>
+<header class="navbar">
+  <h1>SafePass</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="register.html">Register</a>
+        <a href="check.html">Check In/Out</a>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="logs.html">Logs</a>
+
+    </nav>
+</header>
+
+<section class="page-section">
+  <div class="form-image-container">
+    <!-- Left side: image -->
+    <div class="left-image">
+      <img src="images\registerPage.png" alt="Visitor" />
+    </div>
+
+    <!-- Right side: form -->
+    <div class="right-form">
+      <h2>Visitor Registration</h2>
+      <form id="registerForm">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="Cnic">CNIC:</label>
+        <input type="number" id="cnic" name="cnic" required>
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" required>
+        
+        <button type="submit">Submit & Generate QR Code</button>
+      </form>
+
+      <div id="qrCode"></div>
+
+    </div>
+  </div>
+</section>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+document.getElementById("registerForm").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    let name = document.getElementById("name").value;
+    let cnic = document.getElementById("cnic").value;
+    let phone = document.getElementById("phone").value;
+
+    let regVisitors = JSON.parse(localStorage.getItem("regVisitors")) || [];
+
+    if(regVisitors.find(v => v.cnic === cnic)){
+        alert("Visitor already registered!");
+        return;
+    }
+
+    regVisitors.push({name, cnic, phone});
+    localStorage.setItem("regVisitors", JSON.stringify(regVisitors));
+
+    alert("Visitor Registered Successfully!");
+
+    // QR Code Generation
+    const qrContainer = document.getElementById("qrCode");
+    qrContainer.innerHTML = "";
+
+    const qrData = `Name: ${name}\nCNIC: ${cnic}\nPhone: ${phone}`;
+
+    new QRCode(qrContainer, {
+        text: qrData,
+        width: 200,
+        height: 200
+    });
+
+    document.getElementById("registerForm").reset();
+});
+</script>
+<footer class="footer">
+<p>&copy; 2025 SafePass. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
